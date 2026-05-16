@@ -1,18 +1,18 @@
-LexiForge GitHub Pages upload
+LexiForge Phone MVP v2
 
-IMPORTANT:
-Do not open index.html directly from iPhone Files / Downloads.
-That opens it in iOS Quick Look, which often shows the layout but does not run the JavaScript properly.
+Upload index.html to GitHub Pages.
 
-Use it as a website:
+Important:
+- Do not open the HTML from iPhone/iPad Files preview. Use GitHub Pages/Safari.
+- The app saves data in browser localStorage.
+- Use Backup > Download JSON to save all words and progress.
+- Use Backup > Import backup to restore everything on another browser/device.
 
+GitHub Pages:
 1. Create a new GitHub repository.
-2. Upload index.html to the repository.
+2. Upload index.html.
 3. Go to Settings > Pages.
-4. Under Source, choose Deploy from a branch.
-5. Choose main branch and /root.
-6. Save.
-7. Open the GitHub Pages website link on your phone in Safari.
-8. Then tap Share > Add to Home Screen.
-
-The app stores words locally in the browser using localStorage.
+4. Source: Deploy from a branch.
+5. Branch: main / root.
+6. Open the Pages URL on your phone.
+7. Safari > Share > Add to Home Screen.

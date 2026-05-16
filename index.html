@@ -608,7 +608,24 @@
         margin-top:8px;
       }
     }
-  </style>
+  
+
+/* Softer typography overrides */
+body { font-weight: 400; }
+h1 { font-weight: 760 !important; }
+h2 { font-weight: 700 !important; }
+h3 { font-weight: 650 !important; }
+.word-name, .mode-title, .btn, .option { font-weight: 600 !important; }
+.profile h2.word, .question-word, .score, .stat-num { font-weight: 740 !important; }
+.pill, .tag, .metric-label { font-weight: 500 !important; }
+.backup-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.memory-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:16px; }
+@media (min-width:720px){ .memory-grid { grid-template-columns:repeat(4,1fr); } }
+.memory-card { min-height:92px; border:1px solid var(--line); background:white; border-radius:22px; padding:12px; cursor:pointer; display:grid; place-items:center; text-align:center; font-weight:600; color:var(--ink); }
+.memory-card.flipped { background:var(--violet); color:#3f267a; }
+.memory-card.matched { background:var(--green); color:#166534; opacity:.78; }
+
+</style>
 </head>
 <body>
   <div class="app">
@@ -620,7 +637,7 @@
           <span class="pill" id="wordCount">0 words</span>
         </div>
         <h1>LexiForge</h1>
-        <p class="sub">A visually pleasing vocabulary lab for spaced repetition, retrieval practice, context, collocations, AI-generated word cards and the occasional tiny academic crisis.</p>
+        <p class="sub">A phone-friendly vocabulary lab with export/import backup, flashcards, A/B/C/D translation, memory match, typing, context and collocations.</p>
       </section>
 
       <section class="card masterbox">
@@ -788,10 +805,13 @@
 
   var MODES = [
     ["dashboard","📊","Dashboard","memory map"],
-    ["library","📚","Library","search, tags, profiles"],
+    ["library","📚","Library","search + profiles"],
+    ["backup","💾","Backup","export/import data"],
     ["add","➕","Add Word","AI prompt + manual"],
-    ["import","⬆️","Import","paste JSON"],
-    ["flashcards","🃏","Fiszki","active recall"],
+    ["import","⬆️","Import Words","paste AI JSON"],
+    ["flashcards","🃏","Flashcards","active recall"],
+    ["abcd","🔤","A/B/C/D","pick translation"],
+    ["memory","🧩","Memory Match","pair cards"],
     ["typing","⌨️","Typing","Polish → English"],
     ["cloze","✍️","Fill Blank","context practice"],
     ["collocation","📖","Collocations","word partners"]
@@ -802,6 +822,7 @@
   var qIndex = 0;
   var revealed = false;
   var feedback = null;
+  var memoryState = null;
 
   var words = getJson("words");
   if (!Array.isArray(words) || !words.length) words = clone(DEFAULT_WORDS);
@@ -1011,7 +1032,7 @@
     }).join("");
     var btns = document.querySelectorAll("[data-mode]");
     for(var i=0;i<btns.length;i++){
-      btns[i].onclick = function(){ mode=this.getAttribute("data-mode"); qIndex=0; revealed=false; feedback=null; save(); render(); };
+      btns[i].onclick = function(){ mode=this.getAttribute("data-mode"); qIndex=0; revealed=false; feedback=null; memoryState=null; save(); render(); };
     }
   }
 
@@ -1094,7 +1115,7 @@
   }
 
   function renderImport(){
-    return '<section class="card"><div class="section-head"><div><h2>Import Words</h2><p class="muted small">Paste the JSON returned by the AI prompt. It can be one object or an array.</p></div></div>' +
+    return '<section class="card"><div class="section-head"><div><h2>Import Words</h2><p class="muted small">Paste JSON returned by the AI prompt. This adds words without replacing existing data.</p></div></div>' +
     '<textarea id="importBox" style="min-height:420px">[\n  {\n    "word": "anathema",\n    "ipa": "/əˈnæθəmə/",\n    "type": "noun",\n    "translation": "coś znienawidzonego, rzecz nie do przyjęcia",\n    "definition": "something that is strongly disliked or completely rejected",\n    "example": "For someone who values independence, micromanagement is anathema.",\n    "cloze": "For someone who values independence, micromanagement is ___.",\n    "collocations": ["complete anathema", "political anathema", "anathema to someone"],\n    "synonyms": ["abhorrence", "taboo", "curse"],\n    "antonyms": ["ideal", "blessing", "favourite"],\n    "distractors": ["solution", "habit", "agreement", "luxury"],\n    "register": "formal / strong",\n    "tags": ["advanced", "formal", "emotion"],\n    "sourceNotes": ["Anathema is strong and formal.", "The structure anathema to someone is very common."],\n    "nuance": "Anathema means something deeply unacceptable, not just mildly disliked."\n  }\n]</textarea>' +
     '<button class="btn" id="importBtn" style="margin-top:12px">Import</button><p class="muted small" id="importResult" style="margin-top:10px"></p></section>';
   }
@@ -1110,6 +1131,51 @@
     return '<section class="card"><div class="section-head"><div><h2>Fiszki Deluxe</h2><p class="muted small">Self-rate honestly; the algorithm updates the next review.</p></div></div>' +
     '<div class="question-card dark-card"><div class="tiny">Meaning</div><div class="big-translation" style="color:white;font-size:2rem">'+esc(w.translation)+'</div><p style="margin-top:14px;line-height:1.7;color:#e2e8f0">'+esc(w.definition)+'</p><div class="example" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:white">“'+esc(w.example)+'”</div></div>' +
     '<div class="options"><button class="btn light" data-grade=".15">No idea</button><button class="btn light" data-grade=".45">Recognised</button><button class="btn light" data-grade=".7">Slow recall</button><button class="btn" data-grade=".92">Instant</button></div></section>';
+  }
+
+  function renderBackup(){
+    var data = JSON.stringify({version:"lexiforge-phone-v2", exportedAt:new Date().toISOString(), words:words, progress:progress}, null, 2);
+    return '<section class="card"><div class="section-head"><div><h2>Backup / Export / Import</h2><p class="muted small">Use this to move your app data between phone, iPad, laptop or browser. localStorage is browser-specific, so this backup matters.</p></div></div>' +
+      '<div class="grid two">' +
+        '<div class="card"><h3>Export everything</h3><p class="muted small">Downloads all words and progress as one JSON backup file.</p><div class="backup-row"><button class="btn" id="downloadBackup">Download JSON</button><button class="btn light" id="copyBackup">Copy JSON</button></div></div>' +
+        '<div class="card"><h3>Import backup</h3><p class="muted small">Paste a previous LexiForge backup JSON here. This replaces current words/progress.</p><textarea id="backupImport" style="min-height:190px" placeholder="Paste backup JSON here..."></textarea><button class="btn" id="importBackup">Import backup</button></div>' +
+      '</div>' +
+      '<textarea readonly id="backupText" style="margin-top:16px;min-height:300px">'+esc(data)+'</textarea>' +
+    '</section>';
+  }
+
+  function renderABCD(){
+    var list = dueWords();
+    var w = list[qIndex % Math.max(1,list.length)];
+    if(!w) return '<section class="card"><h2>No words yet</h2></section>';
+    var others = shuffle(enrich().filter(function(x){return x.id !== w.id;})).slice(0,3).map(function(x){return x.translation;});
+    var opts = shuffle([w.translation].concat(others));
+    return '<section class="card"><div class="section-head"><div><h2>A/B/C/D Translation</h2><p class="muted small">Pick the correct Polish meaning. Good for fast recognition.</p></div></div>' +
+      '<div class="question-card"><div class="tiny">Choose the translation</div><div class="question-word">'+esc(w.word)+'</div><div class="options">' +
+      opts.map(function(o, i){ return '<button class="option" data-abcd="'+esc(o)+'"><span class="pill">'+String.fromCharCode(65+i)+'</span> '+esc(o)+'</button>'; }).join("") +
+      '</div>' + feedbackHtml() + '</div></section>';
+  }
+
+  function setupMemory(){
+    var sample = shuffle(enrich()).slice(0,6);
+    var cards = [];
+    for(var i=0;i<sample.length;i++){
+      cards.push({id:sample[i].id, type:"word", text:sample[i].word});
+      cards.push({id:sample[i].id, type:"translation", text:sample[i].translation});
+    }
+    memoryState = {cards:shuffle(cards), flipped:[], matched:[], moves:0};
+  }
+
+  function renderMemory(){
+    if(!memoryState) setupMemory();
+    var ms = memoryState;
+    return '<section class="card"><div class="section-head"><div><h2>Memory Match</h2><p class="muted small">Match English words with Polish meanings. Moves: '+ms.moves+'</p></div><button class="btn light" id="newMemory">New board</button></div>' +
+      '<div class="memory-grid">' + ms.cards.map(function(c, i){
+        var isFlipped = ms.flipped.indexOf(i) >= 0;
+        var isMatched = ms.matched.indexOf(i) >= 0;
+        var show = isFlipped || isMatched;
+        return '<button class="memory-card '+(isFlipped?'flipped ':'')+(isMatched?'matched':'')+'" data-memory="'+i+'">'+(show ? esc(c.text) : '✦')+'</button>';
+      }).join("") + '</div></section>';
   }
 
   function renderTyping(){
@@ -1158,9 +1224,12 @@
     var html = "";
     if(mode==="dashboard") html = renderDashboard();
     if(mode==="library") html = renderLibrary();
+    if(mode==="backup") html = renderBackup();
     if(mode==="add") html = renderAdd();
     if(mode==="import") html = renderImport();
     if(mode==="flashcards") html = renderFlashcards();
+    if(mode==="abcd") html = renderABCD();
+    if(mode==="memory") html = renderMemory();
     if(mode==="typing") html = renderTyping();
     if(mode==="cloze") html = renderCloze();
     if(mode==="collocation") html = renderCollocation();
@@ -1174,6 +1243,17 @@
     for(var i=0;i<selects.length;i++){
       selects[i].onclick = function(){ selectedId=this.getAttribute("data-select"); mode="library"; save(); render(); };
     }
+  }
+
+  function downloadFile(filename, text){
+    var blob = new Blob([text], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 300);
   }
 
   function bind(){
@@ -1263,6 +1343,44 @@
       renderStats(); renderPriority();
     };
 
+
+
+    var downloadBackup = document.getElementById("downloadBackup");
+    if(downloadBackup) downloadBackup.onclick = function(){
+      var data = JSON.stringify({version:"lexiforge-phone-v2", exportedAt:new Date().toISOString(), words:words, progress:progress}, null, 2);
+      downloadFile("lexiforge_backup.json", data);
+    };
+
+    var copyBackup = document.getElementById("copyBackup");
+    if(copyBackup) copyBackup.onclick = function(){
+      var el = document.getElementById("backupText");
+      var data = el ? el.value : "";
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(data).then(function(){ alert("Backup copied."); });
+      } else {
+        if(el) el.select();
+        alert("Select and copy manually.");
+      }
+    };
+
+    var importBackup = document.getElementById("importBackup");
+    if(importBackup) importBackup.onclick = function(){
+      var text = document.getElementById("backupImport").value;
+      try {
+        var data = JSON.parse(text);
+        if(!Array.isArray(data.words) || !data.progress) throw new Error("Bad backup");
+        words = data.words.map(makeWord);
+        progress = data.progress || {};
+        selectedId = words[0] ? words[0].id : "";
+        ensureProgress();
+        mode = "dashboard";
+        save();
+        render();
+      } catch(e) {
+        alert("This does not look like a valid LexiForge backup JSON.");
+      }
+    };
+
     var revealBtn = document.getElementById("revealBtn");
     if(revealBtn) revealBtn.onclick = function(){ revealed=true; render(); };
 
@@ -1274,6 +1392,50 @@
         var w = list[qIndex % list.length];
         record(w.id, {recognition:1, recall:1, context:q>.8?.7:.2}, q);
         qIndex++; revealed=false; feedback=null; render();
+      };
+    }
+
+
+
+    var abcdBtns = document.querySelectorAll("[data-abcd]");
+    for(var a=0;a<abcdBtns.length;a++){
+      abcdBtns[a].onclick = function(){
+        var list = dueWords();
+        var w = list[qIndex % list.length];
+        var ok = this.getAttribute("data-abcd") === w.translation;
+        feedback = {ok:ok, text: ok ? "Correct translation." : "Correct answer: " + w.translation};
+        record(w.id, {recognition:1}, ok ? .9 : .25);
+        render();
+      };
+    }
+
+    var newMemory = document.getElementById("newMemory");
+    if(newMemory) newMemory.onclick = function(){ memoryState=null; render(); };
+
+    var memBtns = document.querySelectorAll("[data-memory]");
+    for(var m=0;m<memBtns.length;m++){
+      memBtns[m].onclick = function(){
+        if(!memoryState) return;
+        var idx = Number(this.getAttribute("data-memory"));
+        if(memoryState.matched.indexOf(idx) >= 0 || memoryState.flipped.indexOf(idx) >= 0) return;
+        if(memoryState.flipped.length >= 2) return;
+        memoryState.flipped.push(idx);
+        if(memoryState.flipped.length === 2){
+          memoryState.moves++;
+          var first = memoryState.cards[memoryState.flipped[0]];
+          var second = memoryState.cards[memoryState.flipped[1]];
+          if(first.id === second.id && first.type !== second.type){
+            memoryState.matched.push(memoryState.flipped[0], memoryState.flipped[1]);
+            record(first.id, {recognition:.7, recall:.3}, .8);
+            memoryState.flipped = [];
+            render();
+          } else {
+            render();
+            setTimeout(function(){ memoryState.flipped = []; render(); }, 700);
+            return;
+          }
+        }
+        render();
       };
     }
 
