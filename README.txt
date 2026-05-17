@@ -1,31 +1,16 @@
-LexiForge v12 Repair + Analytics
+LexiForge v12.2 Checked Build
 
 Built-in words: 93
 
 Upload only index.html to GitHub Pages.
 
-Important:
-- v12 migrates local v11, v10 or v9 data if present in the same browser.
-- If your real progress is in cloud, use Cloud Sync -> same sync code -> Download from cloud.
-- This build focuses on repairing broken games and improving analytics.
+Changes:
+- Daily Quest now shows the next planned games.
+- One game is never scheduled twice in a row.
+- After answering, the app freezes the current question and always requires Next.
+- Analytics now says what each weak word needs next.
+- Find Words crosses off found words and only turns correct found letters green.
+- Cloud auto-sync uploads after about 20 local changes, not every answer.
+- Migrates v12/v11/v10/v9 local data on first open.
 
-Fixed/rebuilt:
-- A/B/C/D
-- Reverse
-- Cloze
-- Collocations
-- Word Tiles
-- Sentence Order
-- Daily Quest as a guided session
-- Analytics
-- Audio feedback for correct/wrong answers
-
-Added:
-- Hangman / one-letter submission game
-- Learning Analytics: attempts, accuracy, stage-ups, average attempts to Strong/Mastered, recent activity, weak/strong words
-
-
-Checked before sending:
-- JavaScript syntax check with node --check: passed.
-- Headless browser smoke test: nav rendered, A/B/C/D, Reverse, Cloze, Collocations, Word Tiles, Sentence Order, Daily Quest, Analytics and Letter Game opened without page errors.
-- Cloud autosync is now conservative: local save every answer; cloud upload only after about 20 local changes or manual sync.
+If progress is in cloud: Cloud Sync -> same sync code -> Download from cloud.
