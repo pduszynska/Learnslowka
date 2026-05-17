@@ -23,3 +23,9 @@ Fixed/rebuilt:
 Added:
 - Hangman / one-letter submission game
 - Learning Analytics: attempts, accuracy, stage-ups, average attempts to Strong/Mastered, recent activity, weak/strong words
+
+
+Checked before sending:
+- JavaScript syntax check with node --check: passed.
+- Headless browser smoke test: nav rendered, A/B/C/D, Reverse, Cloze, Collocations, Word Tiles, Sentence Order, Daily Quest, Analytics and Letter Game opened without page errors.
+- Cloud autosync is now conservative: local save every answer; cloud upload only after about 20 local changes or manual sync.
