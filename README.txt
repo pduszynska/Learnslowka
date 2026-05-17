@@ -1,42 +1,29 @@
-LexiForge v10
+LexiForge v11 Smart Learning Engine
 
 Built-in words: 93
 
-New/fixed:
-- Swipe Sort is now a right/left correctness game:
-  word + translation appear; swipe/tap right if correct, left if incorrect.
-- Learning stages:
-  New -> Seeded -> Familiar -> Learning -> Strong -> Mastered -> Long-term.
-- App decides stage from attempts, correct answers, skill strength and mode variety.
-- Spaced reminders: mastered words come back later instead of disappearing.
-- Green/red feedback across games.
-- Better Today counter:
-  attempts, correct, accuracy, XP, words touched.
-- Mini Crossword.
-- Word Tiles / Scrabble-style game.
-- Download App Version button inside the app.
-- Duplicate protection remains.
-- Upload JSON and Backup remain.
+Upload only index.html to GitHub Pages.
 
-Upload index.html to GitHub Pages.
-Open via hosted URL, not Files preview.
+Important:
+- v11 automatically migrates local v10 data from the same browser on first open.
+- It uses lf_v11 localStorage keys, but copies lf_v10 words/progress/stats if present.
+- Cloud Sync uses the same Firebase project and sync code.
+- If your v10 progress is already in cloud, open v11 -> Cloud Sync -> same sync code -> Download from cloud.
+- Use Backup JSON regularly.
 
-
-New in v10:
-- Firebase Cloud Sync using Firestore.
-- Cloud Sync mode in the app.
-- Smart Sync: uploads if cloud is empty/older, downloads if cloud is newer.
-- Manual Upload this device / Download from cloud buttons.
-- Auto-sync option.
-- Local storage and backup JSON still remain.
-
-How to use:
-1. Upload index.html to GitHub Pages.
-2. Open the app from the GitHub Pages URL.
-3. Go to Cloud Sync.
-4. Enter the same hard-to-guess sync code on every device.
-5. On your main device, click Upload this device.
-6. On another device, enter the same code and click Download from cloud or Smart Sync.
-
-Firestore collection used:
-lexiforgeSync / <your sync code>
+New in v11:
+- Learning-stage dashboard: New / Seeded / Familiar / Learning / Strong / Mastered / Long-term / Rusty.
+- Daily Quest recommends the next activity.
+- Safe Import with preview, Add/Merge/Replace, Undo and Restore Points.
+- Edit Word.
+- Improved difficulty path.
+- Word Tiles with backspace, clear all, hints and green correct-position letters.
+- Wordle.
+- Fixed Collocations without spoilers.
+- Mini Crossword with 3 words.
+- Find Words word search, level 1 and level 2.
+- Easy Typing vs Hard Typing.
+- Sentence Order.
+- Grammar Gym from A1 to C2.
+- Test / Exam Mode.
+- Cloud upload warning if cloud has more words than this device.
