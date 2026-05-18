@@ -21,3 +21,23 @@ Included files:
 
 Note:
 Full split Firestore architecture is documented but not activated in this ZIP. That migration should be tested carefully against your real cloud data because your current cloud document hit the Firestore 1MB limit.
+
+
+IPAD PROGRESS BUILD
+This build includes the uploaded backup: lexiforge_v12_2_backup.json.
+On a fresh browser/iPad where LexiForge has no existing local data, index.html preloads:
+- words
+- progress
+- stats/analytics (with a trimmed history for localStorage safety)
+
+The full original uploaded backup is included as:
+lexiforge_uploaded_progress_full_backup.json
+
+If you already have local LexiForge data on the same GitHub Pages URL, this build will NOT overwrite it automatically.
+To force this uploaded backup, clear the site's local storage or use Backup/Import if available.
+
+
+V14.1 FIX:
+- Idioms are now active inside the app menu as 'Idioms'.
+- The 10 native chunks are automatically added to the local word library on load.
+- This build keeps the uploaded v12.2 progress preload for iPad use without Firebase sync.
