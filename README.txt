@@ -1,23 +1,23 @@
-LexiForge v14.6 — Precise Prescriptions + Daily Quest Framework
+LexiForge v14.7 — Safe Patch Daily Framework
 
 Built from stable v14.3.
 
 Keeps:
-- 113 words
-- progress entries
+- words and progress
 - active idioms
 - chunked Firebase sync
 
 Removed:
 - Social Intelligence Mode
 
+Fixed:
+- v14.6 could fail because function declarations are hoisted in JavaScript.
+- v14.7 uses safe assignment overrides, not hoisted function declarations.
+
 Changed:
-- Word prescriptions now show what is missing for the NEXT level
-- If all numeric boxes are ticked, it now asks for a validation challenge instead of pretending there is nothing to do
-- Daily Quest now follows a clear framework:
-  Warm-up → Weakest Link → Upgrade Push → Mixed Proof → Final Check
-- Daily Quest has 10 / 20 / Full daily path options
-- Daily Quest shows why each phase/activity is selected
-- Analytics shows highest ROI words and precise missing proof
+- Word prescriptions now show what is missing for the NEXT level.
+- If everything is ticked, it asks for a validation challenge.
+- Daily Quest uses Warm-up → Weakest Link → Upgrade Push → Mixed Proof → Final Check.
+- Daily Quest has 10 / 20 / Full daily path.
 
 Upload ONLY index.html to GitHub Pages.
