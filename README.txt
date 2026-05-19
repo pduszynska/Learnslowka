@@ -1,18 +1,23 @@
-LexiForge v14.5 — Fixed Daily + Social + Sentence Drag
+LexiForge v14.6 — Precise Prescriptions + Daily Quest Framework
 
-This rebuild fixes the v14.4 runtime issue by using safe function reassignment instead of hoisted duplicate function declarations.
+Built from stable v14.3.
 
 Keeps:
-- words and progress
+- 113 words
+- progress entries
 - active idioms
 - chunked Firebase sync
 
-Adds:
-- Daily Quest 10 / 20 / Full Mission
-- full game rotation
-- target words for most progress today
+Removed:
 - Social Intelligence Mode
-- Sentence Order Easy/Hard
-- Sentence drag/drop and green correct placement in Easy mode
 
-Upload only index.html to GitHub Pages.
+Changed:
+- Word prescriptions now show what is missing for the NEXT level
+- If all numeric boxes are ticked, it now asks for a validation challenge instead of pretending there is nothing to do
+- Daily Quest now follows a clear framework:
+  Warm-up → Weakest Link → Upgrade Push → Mixed Proof → Final Check
+- Daily Quest has 10 / 20 / Full daily path options
+- Daily Quest shows why each phase/activity is selected
+- Analytics shows highest ROI words and precise missing proof
+
+Upload ONLY index.html to GitHub Pages.
