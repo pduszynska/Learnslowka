@@ -1,18 +1,18 @@
-LexiForge v14.4 — Real Daily Quest + Social Intelligence + Sentence Drag
+LexiForge v14.5 — Fixed Daily + Social + Sentence Drag
 
-This build keeps:
-- your words and progress
+This rebuild fixes the v14.4 runtime issue by using safe function reassignment instead of hoisted duplicate function declarations.
+
+Keeps:
+- words and progress
 - active idioms
-- chunked Firebase sync from v14.3
+- chunked Firebase sync
 
-New in v14.4:
-- Daily Quest has 10, 20, and Full Mission options
-- Full Mission rotates through all game/activity types
-- Daily Quest shows highest-effort words and why each activity is chosen
-- Social Intelligence Mode added
-- Sentence Order has Easy and Hard modes
-- Easy mode highlights correctly placed words green
-- Sentence Order supports drag/drop and reorder buttons
-- No automatic question skip; Next is still required
+Adds:
+- Daily Quest 10 / 20 / Full Mission
+- full game rotation
+- target words for most progress today
+- Social Intelligence Mode
+- Sentence Order Easy/Hard
+- Sentence drag/drop and green correct placement in Easy mode
 
-Upload ONLY index.html to GitHub Pages.
+Upload only index.html to GitHub Pages.
