@@ -1,26 +1,18 @@
-LexiForge v14.3 — Chunked Cloud Sync
+LexiForge v14.4 — Real Daily Quest + Social Intelligence + Sentence Drag
 
-This version keeps:
-- latest uploaded progress backup
-- active idioms/native chunks
-- app features from v14.2
+This build keeps:
+- your words and progress
+- active idioms
+- chunked Firebase sync from v14.3
 
-New in v14.3:
-- Cloud sync uploads WORDS + PROGRESS + STATS in chunks
-- Fixes Firestore 1MB document limit
-- Uses collection:
-  lexiforgeChunkSync/{syncCode}/chunks/{chunkId}
-- Upload this device now sends chunked data instead of one giant JSON document
-- Download from cloud reconstructs words + progress from chunks
-- Smart Sync uses the new chunked architecture
+New in v14.4:
+- Daily Quest has 10, 20, and Full Mission options
+- Full Mission rotates through all game/activity types
+- Daily Quest shows highest-effort words and why each activity is chosen
+- Social Intelligence Mode added
+- Sentence Order has Easy and Hard modes
+- Easy mode highlights correctly placed words green
+- Sentence Order supports drag/drop and reorder buttons
+- No automatic question skip; Next is still required
 
 Upload ONLY index.html to GitHub Pages.
-
-After replacing index.html:
-1. Open app.
-2. Go to Cloud Sync.
-3. Use the same sync code.
-4. Click Upload this device.
-5. It should upload words + progress without the 1MB error.
-
-The old single-document sync may still exist in Firebase, but v14.3 uses a new safe chunked collection.
